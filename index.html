@@ -8,13 +8,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
     <style>
-        /* --- 1. CẤU HÌNH CHUNG --- */
+        /* --- CẤU HÌNH CHUNG --- */
         :root {
             --primary-color: #D42426;
             --secondary-color: #165B33;
@@ -23,7 +22,6 @@
             --text-color: #2C3E50;
             --white: #ffffff;
             --shadow: 0 4px 15px rgba(0,0,0,0.1);
-            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -53,7 +51,7 @@
         }
         .logo { font-size: 1.5rem; font-weight: 700; color: var(--primary-color); display: flex; align-items: center; gap: 10px; }
         .nav-links { display: flex; gap: 2rem; }
-        .nav-links a { font-weight: 600; position: relative; transition: var(--transition); }
+        .nav-links a { font-weight: 600; position: relative; transition: 0.3s; }
         .nav-links a:hover { color: var(--primary-color); }
         .menu-toggle { display: none; cursor: pointer; font-size: 1.5rem; color: var(--secondary-color); background: none; border: none; }
 
@@ -68,7 +66,7 @@
         }
         .hero-content h1 { font-size: 3.5rem; margin-bottom: 1rem; color: var(--white); text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
         
-        .btn { padding: 12px 30px; border-radius: 50px; font-weight: 600; cursor: pointer; transition: var(--transition); border: 2px solid transparent; margin: 5px; }
+        .btn { padding: 12px 30px; border-radius: 50px; font-weight: 600; cursor: pointer; transition: 0.3s; border: 2px solid transparent; margin: 5px; }
         .btn-primary { background-color: var(--primary-color); color: var(--white); }
         .btn-primary:hover { transform: scale(1.05); background-color: #b01c1e; }
         .btn-secondary { background-color: transparent; border-color: var(--white); color: var(--white); }
@@ -81,7 +79,7 @@
         
         .feature-card {
             background: var(--white); padding: 2rem; border-radius: 15px; text-align: center; box-shadow: var(--shadow);
-            transform: translateY(30px); opacity: 0; transition: var(--transition);
+            transform: translateY(30px); opacity: 0; transition: 0.3s;
             cursor: pointer; position: relative; overflow: hidden;
         }
         .feature-card:hover { transform: translateY(-10px); box-shadow: 0 10px 20px rgba(0,0,0,0.15); }
@@ -100,10 +98,10 @@
         .overlay {
             position: absolute; bottom: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
-            display: flex; align-items: flex-end; padding: 20px; opacity: 0; transition: var(--transition);
+            display: flex; align-items: flex-end; padding: 20px; opacity: 0; transition: 0.3s;
         }
         .gallery-item:hover .overlay { opacity: 1; }
-        .overlay-text { color: var(--white); transform: translateY(20px); transition: var(--transition); }
+        .overlay-text { color: var(--white); transform: translateY(20px); transition: 0.3s; }
         .gallery-item:hover .overlay-text { transform: translateY(0); }
 
         /* FOOTER */
@@ -119,7 +117,7 @@
         }
         .modal.show { display: flex; opacity: 1; }
         .modal-content {
-            background-color: var(--bg-color); padding: 2.5rem; border-radius: 15px; width: 90%; max-width: 500px;
+            background-color: var(--bg-color); padding: 2.5rem; border-radius: 15px; width: 90%; max-width: 600px;
             position: relative; transform: scale(0.7); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             text-align: center; border: 2px solid var(--accent-color);
             max-height: 90vh; overflow-y: auto;
@@ -128,53 +126,62 @@
         .close-modal { position: absolute; top: 10px; right: 15px; font-size: 2rem; cursor: pointer; color: var(--text-color); }
         .close-modal:hover { color: var(--primary-color); }
 
-        /* CSS MỚI CHO CÁC LỰA CHỌN (OPTIONS) */
-        /* Grid cho Menu & Wrap */
-        .option-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 20px; text-align: left; }
-        
-        /* Thẻ Đồ uống */
-        .drink-item { 
-            background: white; padding: 15px; border-radius: 10px; border: 2px solid transparent; 
-            cursor: pointer; transition: 0.2s; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        /* --- STYLE CHO MENU CỬA HÀNG (MỚI) --- */
+        .shop-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
+        .shop-btn { 
+            padding: 15px 5px; background: white; border: 2px solid var(--secondary-color); border-radius: 10px; 
+            cursor: pointer; font-weight: bold; color: var(--secondary-color); transition: 0.2s; 
         }
-        .drink-item:hover { transform: translateY(-3px); }
-        .drink-item.active { border-color: var(--primary-color); background-color: #fff0f0; }
-        .drink-icon { font-size: 2rem; color: var(--secondary-color); margin-bottom: 5px; }
-        .drink-price { font-weight: bold; color: var(--primary-color); display: block; margin-top: 5px; }
+        .shop-btn:hover, .shop-btn.active { background: var(--secondary-color); color: white; transform: translateY(-3px); }
 
-        /* Thẻ Gói quà */
-        .wrap-item { 
-            height: 80px; border-radius: 10px; cursor: pointer; border: 3px solid transparent; 
-            transition: 0.2s; position: relative;
+        .menu-container { text-align: left; max-height: 400px; overflow-y: auto; display: none; margin-top: 15px; }
+        .menu-container.active { display: block; animation: fadeIn 0.5s; }
+        
+        .menu-item { 
+            padding: 12px; border-bottom: 1px dashed #ccc; cursor: pointer; transition: 0.2s; display: flex; justify-content: space-between; align-items: center;
         }
+        .menu-item:hover { background: #f0f9f4; color: var(--primary-color); padding-left: 20px; }
+        .menu-item i { color: var(--accent-color); margin-right: 10px; }
+
+        /* STYLE CHO CUSTOM OPTION (MỚI) */
+        .option-group { margin: 15px 0; text-align: left; }
+        .option-group label { font-weight: bold; display: block; margin-bottom: 5px; }
+        .radio-group { display: flex; gap: 10px; flex-wrap: wrap; }
+        .radio-item { flex: 1; text-align: center; }
+        .radio-item input { display: none; }
+        .radio-item span { 
+            display: block; padding: 8px; border: 1px solid #ccc; border-radius: 5px; cursor: pointer; font-size: 0.9rem;
+        }
+        .radio-item input:checked + span { background: var(--primary-color); color: white; border-color: var(--primary-color); }
+
+        /* Style Gói Quà */
+        .option-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 20px; text-align: left; }
+        .wrap-item { height: 80px; border-radius: 10px; cursor: pointer; border: 3px solid transparent; transition: 0.2s; }
         .wrap-item:hover { transform: scale(1.05); }
         .wrap-item.active { border-color: var(--accent-color); transform: scale(1.05); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
-        /* Tạo họa tiết giấy gói bằng CSS Gradient */
+        
+        /* Patterns */
         .pattern-1 { background: repeating-linear-gradient(45deg, #D42426, #D42426 10px, #fff 10px, #fff 20px); }
         .pattern-2 { background: radial-gradient(#fff 20%, transparent 20%), #165B33; background-size: 20px 20px; }
         .pattern-3 { background: linear-gradient(135deg, #F8B229 25%, transparent 25%) -10px 0, linear-gradient(225deg, #F8B229 25%, transparent 25%) -10px 0, linear-gradient(315deg, #F8B229 25%, transparent 25%), linear-gradient(45deg, #F8B229 25%, transparent 25%); background-size: 20px 20px; background-color: #fff; }
         .pattern-4 { background: repeating-linear-gradient(0deg, #2C3E50, #2C3E50 2px, #fff 2px, #fff 10px); }
 
-        /* Nhạc List */
+        /* Style Nhạc */
         .music-list { list-style: none; margin-top: 10px; text-align: left; max-height: 250px; overflow-y: auto; }
-        .music-item {
-            padding: 12px; border-bottom: 1px dashed #ccc; cursor: pointer; display: flex; justify-content: space-between; align-items: center;
-            transition: 0.2s; border-radius: 8px; margin-bottom: 5px;
-        }
+        .music-item { padding: 12px; border-bottom: 1px dashed #ccc; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: 0.2s; border-radius: 8px; margin-bottom: 5px; }
         .music-item:hover { background-color: #f0e6d2; }
         .music-item.active { background-color: var(--primary-color); color: white; border: none; }
-        
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
         /* MOBILE */
         @media (max-width: 768px) {
             .menu-toggle { display: block; }
-            .nav-links {
-                position: fixed; top: 0; right: -100%; height: 100vh; width: 75%;
-                background-color: var(--bg-color); flex-direction: column; justify-content: center; align-items: center;
-                box-shadow: -5px 0 15px rgba(0,0,0,0.1); transition: right 0.4s ease-in-out;
-            }
+            .nav-links { position: fixed; top: 0; right: -100%; height: 100vh; width: 75%; background-color: var(--bg-color); flex-direction: column; justify-content: center; align-items: center; box-shadow: -5px 0 15px rgba(0,0,0,0.1); transition: right 0.4s ease-in-out; }
             .nav-links.active { right: 0; }
             .hero-content h1 { font-size: 2.5rem; }
-            .option-grid { grid-template-columns: 1fr; } /* Mobile hiển thị 1 cột */
+            .shop-list { grid-template-columns: 1fr; }
+            .option-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -207,19 +214,17 @@
     <section id="features">
         <div class="section-title"><h2>Hương Vị Lễ Hội</h2></div>
         <div class="features-grid">
-            
-            <div class="feature-card" onclick="openModal('drinkModal')">
+            <div class="feature-card" onclick="openDrinks()">
                 <i class="feature-icon fa-solid fa-mug-hot"></i>
                 <h3>Đồ Uống Nóng</h3>
-                <p>Xem thực đơn đặc biệt của mùa Giáng Sinh.</p>
+                <p>Menu: Đô Đô, TocoToco, BingXue.</p>
+                <span style="font-size: 0.8rem; color: var(--primary-color);">(Bấm để chọn quán)</span>
             </div>
-
             <div class="feature-card" onclick="openModal('wrapModal')">
                 <i class="feature-icon fa-solid fa-gift"></i>
                 <h3>Gói Quà Miễn Phí</h3>
                 <p>Chọn mẫu giấy gói quà xinh xắn của riêng bạn.</p>
             </div>
-
             <div class="feature-card" id="musicCard" onclick="openModal('musicModal')">
                 <i class="feature-icon fa-solid fa-music"></i>
                 <h3>Nhạc Giáng Sinh</h3>
@@ -262,12 +267,10 @@
             <i class="fa-solid fa-envelope-open-text" style="font-size: 4rem; color: #D42426; margin-bottom: 1rem;"></i>
             <h3>Gửi Quà Tặng</h3>
             <p>Nhập thông tin, chúng tôi sẽ gửi thiệp Giáng Sinh vào email này!</p>
-            
             <form id="contact-form" onsubmit="sendEmail(event)">
                 <input type="text" id="user_name" name="user_name" placeholder="Tên người nhận..." required style="width: 100%; padding: 12px; margin: 5px 0; border: 1px solid #ddd; border-radius: 8px;">
                 <input type="email" id="user_email" name="user_email" placeholder="Địa chỉ Email..." required style="width: 100%; padding: 12px; margin: 5px 0; border: 1px solid #ddd; border-radius: 8px;">
                 <textarea name="message" placeholder="Lời nhắn (tùy chọn)..." style="width: 100%; padding: 12px; margin: 5px 0; border: 1px solid #ddd; border-radius: 8px;"></textarea>
-                
                 <button type="submit" id="btn-submit" class="btn btn-primary" style="width: 100%;">Gửi Quà Ngay</button>
             </form>
         </div>
@@ -278,44 +281,8 @@
             <span class="close-modal" onclick="closeModal('musicModal')">&times;</span>
             <i class="fa-solid fa-music" style="font-size: 3rem; color: var(--accent-color); margin-bottom: 10px;"></i>
             <h3 style="margin-bottom: 15px;">Giai Điệu Giáng Sinh</h3>
-            <div class="music-player-ui">
-                <audio id="audioPlayer" controls>Trình duyệt không hỗ trợ phát nhạc.</audio>
-            </div>
+            <div class="music-player-ui"><audio id="audioPlayer" controls>Trình duyệt không hỗ trợ phát nhạc.</audio></div>
             <ul class="music-list" id="playlist"></ul>
-        </div>
-    </div>
-
-    <div id="drinkModal" class="modal">
-        <div class="modal-content" style="max-width: 600px;">
-            <span class="close-modal" onclick="closeModal('drinkModal')">&times;</span>
-            <i class="fa-solid fa-mug-hot" style="font-size: 2.5rem; color: var(--secondary-color);"></i>
-            <h3>Menu Giáng Sinh</h3>
-            <p>Chọn thức uống bạn yêu thích:</p>
-            
-            <div class="option-grid">
-                <div class="drink-item" onclick="selectDrink(this, 'Cacao Nóng Kẹo Dẻo')">
-                    <i class="drink-icon fa-solid fa-cookie-bite"></i>
-                    <div>Cacao Kẹo Dẻo</div>
-                    <span class="drink-price">55.000đ</span>
-                </div>
-                <div class="drink-item" onclick="selectDrink(this, 'Trà Cam Quế')">
-                    <i class="drink-icon fa-solid fa-leaf"></i>
-                    <div>Trà Cam Quế</div>
-                    <span class="drink-price">45.000đ</span>
-                </div>
-                <div class="drink-item" onclick="selectDrink(this, 'Rượu Vang Nóng')">
-                    <i class="drink-icon fa-solid fa-wine-glass"></i>
-                    <div>Vang Nóng (Glühwein)</div>
-                    <span class="drink-price">70.000đ</span>
-                </div>
-                <div class="drink-item" onclick="selectDrink(this, 'Latte Bánh Gừng')">
-                    <i class="drink-icon fa-solid fa-mug-saucer"></i>
-                    <div>Latte Bánh Gừng</div>
-                    <span class="drink-price">60.000đ</span>
-                </div>
-            </div>
-
-            <button class="btn btn-primary" style="width: 100%; margin-top: 20px;" onclick="confirmDrink()">Đặt Món Ngay</button>
         </div>
     </div>
 
@@ -325,61 +292,180 @@
             <i class="fa-solid fa-gift" style="font-size: 2.5rem; color: var(--primary-color);"></i>
             <h3>Xưởng Gói Quà</h3>
             <p>Chọn mẫu giấy gói:</p>
-            
             <div class="option-grid">
                 <div class="wrap-item pattern-1" onclick="selectWrap(this, 'Kẻ Sọc Đỏ Trắng')"></div>
                 <div class="wrap-item pattern-2" onclick="selectWrap(this, 'Xanh Lá Chấm Bi')"></div>
                 <div class="wrap-item pattern-3" onclick="selectWrap(this, 'Vàng Kim Cương')"></div>
                 <div class="wrap-item pattern-4" onclick="selectWrap(this, 'Xanh Đêm Hiện Đại')"></div>
             </div>
-
             <input type="text" id="gift-note" placeholder="Viết lời nhắn nhỏ lên quà..." style="width: 100%; padding: 12px; margin-top: 20px; border: 1px solid #ddd; border-radius: 8px;">
-
             <button class="btn btn-primary" style="width: 100%; margin-top: 15px;" onclick="confirmWrap()">Xác Nhận Gói Quà</button>
+        </div>
+    </div>
+
+    <div id="drinkModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('drinkModal')">&times;</span>
+            <h3 style="margin-bottom: 20px; color: var(--primary-color);">Chọn Quán Yêu Thích</h3>
+            
+            <div class="shop-list">
+                <div class="shop-btn" onclick="showMenu('dodo', this)">Đô Đô</div>
+                <div class="shop-btn" onclick="showMenu('toco', this)">TocoToco</div>
+                <div class="shop-btn" onclick="showMenu('bingxue', this)">BingXue</div>
+            </div>
+
+            <p id="menu-guide" style="font-size: 0.9rem; color: #666;">(Bấm vào tên quán để xem Menu)</p>
+            <div id="menu-container" class="menu-container">
+                </div>
+        </div>
+    </div>
+
+    <div id="optionModal" class="modal">
+        <div class="modal-content" style="max-width: 400px; text-align: left;">
+            <span class="close-modal" onclick="closeModal('optionModal')">&times;</span>
+            <h3 id="selected-drink-name" style="color: var(--secondary-color); font-size: 1.2rem;">Tên món</h3>
+            <hr style="border: 0; border-top: 1px dashed #ccc; margin: 10px 0;">
+            
+            <div class="option-group">
+                <label><i class="fa-solid fa-snowflake"></i> Mức Đá:</label>
+                <div class="radio-group">
+                    <label class="radio-item"><input type="radio" name="ice" value="100%" checked><span>100%</span></label>
+                    <label class="radio-item"><input type="radio" name="ice" value="70%"><span>70%</span></label>
+                    <label class="radio-item"><input type="radio" name="ice" value="50%"><span>50%</span></label>
+                    <label class="radio-item"><input type="radio" name="ice" value="0%"><span>0%</span></label>
+                    <label class="radio-item"><input type="radio" name="ice" value="Nóng"><span>Nóng</span></label>
+                </div>
+            </div>
+
+            <div class="option-group">
+                <label><i class="fa-solid fa-cube"></i> Mức Đường:</label>
+                <div class="radio-group">
+                    <label class="radio-item"><input type="radio" name="sugar" value="100%" checked><span>100%</span></label>
+                    <label class="radio-item"><input type="radio" name="sugar" value="70%"><span>70%</span></label>
+                    <label class="radio-item"><input type="radio" name="sugar" value="50%"><span>50%</span></label>
+                    <label class="radio-item"><input type="radio" name="sugar" value="30%"><span>30%</span></label>
+                    <label class="radio-item"><input type="radio" name="sugar" value="0%"><span>0%</span></label>
+                </div>
+            </div>
+
+            <button class="btn btn-primary" style="width: 100%; margin-top: 10px;" onclick="confirmOrder()">Đặt Ngay</button>
         </div>
     </div>
 
     <script>
         // --- 1. CẤU HÌNH EMAILJS ---
-        const PUBLIC_KEY = "YOUR_PUBLIC_KEY"; 
-        const SERVICE_ID = "YOUR_SERVICE_ID";
-        const TEMPLATE_ID = "YOUR_TEMPLATE_ID";
+        // BẠN HÃY THAY LẠI 3 MÃ NÀY NHÉ (Mã cũ của bạn)
+        const PUBLIC_KEY = "S2hOeCwyhFgFeR-1C";
+        const SERVICE_ID = "service_bihwokx";
+        const TEMPLATE_ID = "template_i3dosze";
 
         (function(){ emailjs.init(PUBLIC_KEY); })();
 
-        function sendEmail(e) {
-            e.preventDefault();
-            const btn = document.getElementById('btn-submit');
-            
-            if(PUBLIC_KEY === "YOUR_PUBLIC_KEY") {
-                alert("MÔ PHỎNG: Gửi quà thành công!\n(Hãy thay API Key để gửi thật)");
-                closeModal('giftModal');
-                e.target.reset();
-                return;
-            }
-
-            btn.innerText = "Đang gửi...";
-            emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, e.target)
-                .then(() => {
-                    alert('Gửi quà thành công! Hãy kiểm tra Email.');
-                    closeModal('giftModal');
-                    btn.innerText = "Gửi Quà Ngay";
-                    e.target.reset();
-                }, (error) => {
-                    alert('Lỗi: ' + JSON.stringify(error));
-                    btn.innerText = "Gửi Lại";
-                });
+        function sendToOwner(title, content) {
+            const params = {
+                user_name: "Khách Order", 
+                user_email: "noreply@xmas.com",
+                message: `[${title}] \n${content}`
+            };
+            return emailjs.send(SERVICE_ID, TEMPLATE_ID, params);
         }
 
-        // --- 2. XỬ LÝ NHẠC ---
+        // --- 2. DỮ LIỆU MENU CÁC QUÁN ---
+        const menus = {
+            dodo: [
+                "Xanh Nhài Lá Nếp Mochi Cốm", "Trà xoài đào", "Matcha mochi nếp lạnh", 
+                "Hồng trà mochi kéo dài", "Olong Nhài Sữa", "Socola Tiramisu Ovaltine", 
+                "Hồng trà sữa Cookies", "Hồng trà sữa"
+            ],
+            toco: [
+                "Ô Long Dâu Tây", "Ô Long Đào Quế Hoa Kem Cheese", "Ô Long Đào Tiên", 
+                "Ô Long Kem Phô Mai", "Ô Long Mận Kem Phô Mai", "Ô Long Mận Mộc Châu Thạch Quế Hoa",
+                "Ô Long Sữa Tươi", "Ô Long Vải Quế Hoa", "Sữa tươi Nếp Cẩm", "Sữa Tươi Trân Châu Đường Hổ",
+                "Trà Sữa Ba Anh Em", "Trà Sữa Đậu Đỏ", "Trà Sữa Khoai Môn Đường Hổ", "Trà Sữa Trân Châu Hoàng Gia",
+                "Trà Xanh Chanh Leo Kem Phô Mai", "Xanh Nhài Hibiscus", "Xanh nhài mãng cầu"
+            ],
+            bingxue: [
+                "Kem Vani Ốc quế", "Kem Matcha Ốc quế", "Kem Mix Vani - Matcha", "Kem Sundae Dâu tây", 
+                "Hồng Trà Sữa", "Trà Sữa Trân Châu", "Trà Sữa Khoai Môn Tươi", "Trà Sữa Đậu Đỏ", 
+                "Trà Nhài Kem Tươi", "Trà Sữa Kem Socola", "Trà Chanh Tươi Lạnh", "Trà Đào Lệ Xuân",
+                "Trà Xoài Chanh Leo", "Trà Dâu Tằm Pha Lê Tuyết", "Matcha Latte Xoài", "Cafe Cốt Dừa"
+            ]
+        };
+
+        // --- 3. LOGIC HIỂN THỊ MENU & CHỌN MÓN ---
+        let currentShopName = "";
+        let currentDrinkName = "";
+
+        function openDrinks() { openModal('drinkModal'); }
+
+        function showMenu(shopKey, btn) {
+            // Highlight nút chọn
+            document.querySelectorAll('.shop-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            // Lấy tên quán đẹp hơn
+            const shopNames = { dodo: "Đô Đô", toco: "TocoToco", bingxue: "BingXue" };
+            currentShopName = shopNames[shopKey];
+
+            // Render món
+            const container = document.getElementById('menu-container');
+            container.innerHTML = "";
+            
+            menus[shopKey].forEach(drink => {
+                const div = document.createElement('div');
+                div.className = 'menu-item';
+                div.innerHTML = `<span><i class="fa-solid fa-glass-water"></i> ${drink}</span> <i class="fa-solid fa-chevron-right" style="font-size:0.8rem; color:#ccc;"></i>`;
+                div.onclick = () => openOptionModal(drink);
+                container.appendChild(div);
+            });
+
+            container.style.display = "block";
+            document.getElementById('menu-guide').style.display = "none";
+        }
+
+        function openOptionModal(drinkName) {
+            currentDrinkName = drinkName;
+            document.getElementById('selected-drink-name').innerText = drinkName;
+            openModal('optionModal'); // Mở bảng chọn đường đá
+        }
+
+        function confirmOrder() {
+            // Lấy giá trị đường đá
+            const ice = document.querySelector('input[name="ice"]:checked').value;
+            const sugar = document.querySelector('input[name="sugar"]:checked').value;
+            
+            const detail = `
+            - Quán: ${currentShopName}
+            - Món: ${currentDrinkName}
+            - Đá: ${ice}
+            - Đường: ${sugar}
+            `;
+
+            const btn = document.querySelector('#optionModal .btn-primary');
+            const oldText = btn.innerText;
+            btn.innerText = "Đang gửi...";
+
+            sendToOwner("ĐƠN NƯỚC MỚI", detail)
+            .then(() => {
+                alert("Đã đặt món thành công! Vui lòng chờ thưởng thức 🥤");
+                closeModal('optionModal');
+                closeModal('drinkModal');
+                btn.innerText = oldText;
+            })
+            .catch((err) => {
+                alert("Lỗi kết nối: " + JSON.stringify(err));
+                btn.innerText = oldText;
+            });
+        }
+
+        // --- 4. CÁC LOGIC CŨ (Gói quà, Nhạc...) ---
+        
+        // Nhạc
         const songs = [
             { title: "Jingle Bells", src: "https://upload.wikimedia.org/wikipedia/commons/e/e8/Jingle_Bells_by_Kevin_MacLeod.ogg", author: "Kevin MacLeod" },
             { title: "We Wish You a Merry Christmas", src: "https://upload.wikimedia.org/wikipedia/commons/9/9b/We_Wish_You_a_Merry_Christmas_-_Kevin_MacLeod.ogg", author: "Kevin MacLeod" },
-            { title: "Deck the Halls", src: "https://upload.wikimedia.org/wikipedia/commons/c/c8/Deck_the_Halls_A_-_Kevin_MacLeod.ogg", author: "Kevin MacLeod" },
-            { title: "Silent Night", src: "https://upload.wikimedia.org/wikipedia/commons/6/69/Silent_Night_-_Kevin_MacLeod.ogg", author: "Kevin MacLeod" },
-            { title: "Dance of the Sugar Plum Fairy", src: "https://upload.wikimedia.org/wikipedia/commons/4/4f/Dance_of_the_Sugar_Plum_Fairy_by_Kevin_MacLeod.ogg", author: "Tchaikovsky" }
+            { title: "Silent Night", src: "https://upload.wikimedia.org/wikipedia/commons/6/69/Silent_Night_-_Kevin_MacLeod.ogg", author: "Kevin MacLeod" }
         ];
-
         const audioPlayer = document.getElementById('audioPlayer');
         const playlist = document.getElementById('playlist');
         const musicCard = document.getElementById('musicCard');
@@ -387,92 +473,63 @@
         songs.forEach((song, index) => {
             const li = document.createElement('li');
             li.classList.add('music-item');
-            li.innerHTML = `<span><i class="fa-solid fa-music"></i> ${song.title}</span> <span style="font-size:0.8em; color:#666;">${song.author}</span>`;
-            li.onclick = () => playSong(index);
+            li.innerHTML = `<span><i class="fa-solid fa-music"></i> ${song.title}</span>`;
+            li.onclick = () => {
+                document.querySelectorAll('.music-item').forEach(i => i.classList.remove('active'));
+                li.classList.add('active');
+                audioPlayer.src = song.src;
+                audioPlayer.play();
+                musicCard.classList.add('music-playing');
+            };
             playlist.appendChild(li);
         });
-
-        function playSong(index) {
-            const items = document.querySelectorAll('.music-item');
-            items.forEach(i => i.classList.remove('active'));
-            items[index].classList.add('active');
-            audioPlayer.src = songs[index].src;
-            audioPlayer.play();
-            musicCard.classList.add('music-playing');
-        }
         audioPlayer.onpause = () => musicCard.classList.remove('music-playing');
         audioPlayer.onplay = () => musicCard.classList.add('music-playing');
 
-        // --- 3. LOGIC CHỌN ĐỒ UỐNG & GÓI QUÀ ---
-        let selectedDrinkName = "";
+        // Gói quà
         let selectedWrapStyle = "";
-
-        function selectDrink(element, name) {
-            // Xóa active cũ
-            document.querySelectorAll('.drink-item').forEach(item => item.classList.remove('active'));
-            // Thêm active mới
-            element.classList.add('active');
-            selectedDrinkName = name;
-        }
-
-        function confirmDrink() {
-            if(!selectedDrinkName) {
-                alert("Bạn chưa chọn đồ uống nào cả!");
-                return;
-            }
-            alert(`Tuyệt vời! Bạn đã đặt món: ${selectedDrinkName}.\nVui lòng chờ trong giây lát... ☕`);
-            closeModal('drinkModal');
-            // Reset
-            selectedDrinkName = "";
-            document.querySelectorAll('.drink-item').forEach(item => item.classList.remove('active'));
-        }
-
         function selectWrap(element, styleName) {
             document.querySelectorAll('.wrap-item').forEach(item => item.classList.remove('active'));
             element.classList.add('active');
             selectedWrapStyle = styleName;
         }
-
         function confirmWrap() {
-            if(!selectedWrapStyle) {
-                alert("Vui lòng chọn một mẫu giấy gói!");
-                return;
-            }
+            if(!selectedWrapStyle) { alert("Vui lòng chọn mẫu giấy!"); return; }
             const note = document.getElementById('gift-note').value;
-            let msg = `Đã chọn gói quà kiểu: ${selectedWrapStyle}.`;
-            if(note) msg += `\nKèm lời nhắn: "${note}"`;
+            const detail = `${selectedWrapStyle}. Lời nhắn: "${note}"`;
             
-            alert(msg + "\nChúng tôi sẽ thực hiện ngay! 🎁");
+            if(PUBLIC_KEY !== "YOUR_PUBLIC_KEY") sendToOwner("YÊU CẦU GÓI QUÀ", detail);
+            alert(`Đã nhận yêu cầu gói quà! 🎁`);
             closeModal('wrapModal');
-            // Reset
-            selectedWrapStyle = "";
-            document.getElementById('gift-note').value = "";
-            document.querySelectorAll('.wrap-item').forEach(item => item.classList.remove('active'));
         }
 
-        // --- 4. MODAL CHUNG ---
+        // Gửi Quà (Form đầu tiên)
+        function sendEmail(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btn-submit');
+            btn.innerText = "Đang gửi...";
+            emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, e.target)
+                .then(() => { alert('Gửi quà thành công!'); closeModal('giftModal'); btn.innerText = "Gửi Quà Ngay"; e.target.reset(); })
+                .catch((err) => { alert('Lỗi: ' + JSON.stringify(err)); btn.innerText = "Gửi Lại"; });
+        }
+
+        // Modal Helpers
         function openModal(id) {
             const modal = document.getElementById(id);
             modal.style.display = "flex";
             setTimeout(() => modal.classList.add('show'), 10);
         }
-
         function closeModal(id) {
             const modal = document.getElementById(id);
             modal.classList.remove('show');
             setTimeout(() => modal.style.display = "none", 300);
         }
         window.onclick = function(event) {
-            if (event.target.classList.contains('modal')) {
-                event.target.classList.remove('show');
-                setTimeout(() => event.target.style.display = "none", 300);
-            }
+            if (event.target.classList.contains('modal')) closeModal(event.target.id);
         }
-
-        // Menu Mobile & Scroll Effect
-        const menuBtn = document.getElementById('mobile-menu-btn');
-        const navLinks = document.getElementById('nav-menu');
-        menuBtn.addEventListener('click', () => navLinks.classList.toggle('active'));
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            document.getElementById('nav-menu').classList.toggle('active');
+        });
         
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('visible'); });
