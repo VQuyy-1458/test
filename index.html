@@ -5,15 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Giáng Sinh An Lành 2024</title>
     
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
     
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- PHẦN CSS (STYLES) -->
     <style>
         /* --- 1. BIẾN MÀU SẮC & CẤU HÌNH CHUNG --- */
         :root {
@@ -122,7 +119,8 @@
 
         /* FOOTER */
         footer { background-color: var(--secondary-color); color: var(--white); text-align: center; padding: 3rem 5%; }
-        .footer-links a { margin: 0 10px; font-size: 1.5rem; color: var(--white); }
+        .footer-links a { margin: 0 10px; font-size: 1.5rem; color: var(--white); transition: color 0.3s; }
+        .footer-links a:hover { color: var(--accent-color); }
         
         /* MOBILE */
         @media (max-width: 768px) {
@@ -139,7 +137,6 @@
 </head>
 <body>
 
-    <!-- Header -->
     <header>
         <div class="logo"><i class="fa-solid fa-sleigh"></i> XmasDream</div>
         <button class="menu-toggle" id="mobile-menu-btn"><i class="fa-solid fa-bars"></i></button>
@@ -153,7 +150,6 @@
         </nav>
     </header>
 
-    <!-- Hero -->
     <section id="hero">
         <div class="hero-content">
             <h1>Giáng Sinh Ấm Áp</h1>
@@ -165,7 +161,6 @@
         </div>
     </section>
 
-    <!-- Features -->
     <section id="features">
         <div class="section-title"><h2>Hương Vị Lễ Hội</h2></div>
         <div class="features-grid">
@@ -187,37 +182,38 @@
         </div>
     </section>
 
-    <!-- Gallery -->
     <section id="gallery" style="background: #fff;">
         <div class="section-title"><h2>Góc Ảnh Giáng Sinh</h2></div>
         <div class="gallery-grid">
             <div class="gallery-item">
-                <img src="https://images.unsplash.com/photo-1576919228236-a097c32a5cd4" alt="Bánh quy">
+                <img src="https://images.unsplash.com/photo-1576919228236-a097c32a5cd4?auto=format&fit=crop&q=80&w=600" alt="Bánh quy">
                 <div class="overlay"><div class="overlay-text"><h3>Ngọt Ngào</h3><p>Bánh quy gừng</p></div></div>
             </div>
             <div class="gallery-item">
-                <img src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fvinwonders.com%2Fvi%2Fwonderpedia%2Fnews%2Ftim-hieu-ve-cay-thong-mua-giang-sinh%2F&psig=AOvVaw3drK4JPtPxCBx5tXa4FeFn&ust=1763994974682000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCOjXssO_iJEDFQAAAAAdAAAAABAE" alt="Cây thông">
+                <img src="https://images.unsplash.com/photo-1544967082-d9d25d867d66?auto=format&fit=crop&q=80&w=600" alt="Cây thông">
                 <div class="overlay"><div class="overlay-text"><h3>Rực Rỡ</h3><p>Đèn trang trí</p></div></div>
             </div>
             <div class="gallery-item">
-                <img src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pexels.com%2Fvi-vn%2Ftim-kiem%2Ftuy%25E1%25BA%25BFt%2520r%25C6%25A1i%2F&psig=AOvVaw0a0Ved_FyBOK2YJkhL1wTI&ust=1763995051347000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCODOvOa_iJEDFQAAAAAdAAAAABAE" alt="Tuyết">
+                <img src="https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?auto=format&fit=crop&q=80&w=600" alt="Tuyết rơi">
                 <div class="overlay"><div class="overlay-text"><h3>An Lành</h3><p>Đêm tuyết trắng</p></div></div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
     <footer id="contact">
         <h2>XmasDream</h2>
         <p>Chúc bạn một mùa Giáng Sinh an lành.</p>
         <div class="footer-links" style="margin-top: 20px;">
-            <a href="#"><i class="fa-brands fa-facebook"></i></a>
-            <a href="#"><i class="fa-brands fa-instagram"></i></a>
-            <a href="#"><i class="fa-brands fa-twitter"></i></a>
+            <a href="https://www.facebook.com/van.quy.510260" target="_blank" title="Facebook của Quý">
+                <i class="fa-brands fa-facebook"></i>
+            </a>
+            
+            <a href="https://www.instagram.com/_quyyys.20_11/" target="_blank" title="Instagram của Quý">
+                <i class="fa-brands fa-instagram"></i>
+            </a>
         </div>
     </footer>
 
-    <!-- Modal -->
     <div id="giftModal" class="modal">
         <div class="modal-content">
             <span class="close-modal">&times;</span>
@@ -231,7 +227,6 @@
         </div>
     </div>
 
-    <!-- PHẦN JAVASCRIPT -->
     <script>
         // Menu Mobile
         const menuBtn = document.getElementById('mobile-menu-btn');
@@ -263,6 +258,3 @@
     </script>
 </body>
 </html>
-
-
-
