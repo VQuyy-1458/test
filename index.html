@@ -126,7 +126,7 @@
         .close-modal { position: absolute; top: 10px; right: 15px; font-size: 2rem; cursor: pointer; color: var(--text-color); }
         .close-modal:hover { color: var(--primary-color); }
 
-        /* --- STYLE CHO MENU CỬA HÀNG (MỚI) --- */
+        /* --- STYLE CHO MENU CỬA HÀNG --- */
         .shop-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
         .shop-btn { 
             padding: 15px 5px; background: white; border: 2px solid var(--secondary-color); border-radius: 10px; 
@@ -142,8 +142,12 @@
         }
         .menu-item:hover { background: #f0f9f4; color: var(--primary-color); padding-left: 20px; }
         .menu-item i { color: var(--accent-color); margin-right: 10px; }
+        
+        /* Custom Item Style */
+        .menu-item.custom-item { font-weight: bold; color: var(--primary-color); border-top: 2px solid #eee; margin-top: 10px; background-color: #fff5f5; }
+        .menu-item.custom-item:hover { background-color: #ffe0e0; }
 
-        /* STYLE CHO CUSTOM OPTION (MỚI) */
+        /* STYLE CHO CUSTOM OPTION */
         .option-group { margin: 15px 0; text-align: left; }
         .option-group label { font-weight: bold; display: block; margin-bottom: 5px; }
         .radio-group { display: flex; gap: 10px; flex-wrap: wrap; }
@@ -160,7 +164,6 @@
         .wrap-item:hover { transform: scale(1.05); }
         .wrap-item.active { border-color: var(--accent-color); transform: scale(1.05); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
         
-        /* Patterns */
         .pattern-1 { background: repeating-linear-gradient(45deg, #D42426, #D42426 10px, #fff 10px, #fff 20px); }
         .pattern-2 { background: radial-gradient(#fff 20%, transparent 20%), #165B33; background-size: 20px 20px; }
         .pattern-3 { background: linear-gradient(135deg, #F8B229 25%, transparent 25%) -10px 0, linear-gradient(225deg, #F8B229 25%, transparent 25%) -10px 0, linear-gradient(315deg, #F8B229 25%, transparent 25%), linear-gradient(45deg, #F8B229 25%, transparent 25%); background-size: 20px 20px; background-color: #fff; }
@@ -323,7 +326,14 @@
     <div id="optionModal" class="modal">
         <div class="modal-content" style="max-width: 400px; text-align: left;">
             <span class="close-modal" onclick="closeModal('optionModal')">&times;</span>
+            
             <h3 id="selected-drink-name" style="color: var(--secondary-color); font-size: 1.2rem;">Tên món</h3>
+            
+            <div id="custom-input-container" style="display:none; margin-bottom: 15px;">
+                <label style="color: var(--primary-color);">Nhập tên món bạn muốn:</label>
+                <input type="text" id="custom-drink-name" placeholder="Ví dụ: Trà đào cam sả..." style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; margin-top: 5px;">
+            </div>
+
             <hr style="border: 0; border-top: 1px dashed #ccc; margin: 10px 0;">
             
             <div class="option-group">
@@ -354,7 +364,7 @@
 
     <script>
         // --- 1. CẤU HÌNH EMAILJS ---
-        // BẠN HÃY THAY LẠI 3 MÃ NÀY NHÉ (Mã cũ của bạn)
+        // (Giữ nguyên API Key của bạn)
         const PUBLIC_KEY = "S2hOeCwyhFgFeR-1C";
         const SERVICE_ID = "service_bihwokx";
         const TEMPLATE_ID = "template_i3dosze";
@@ -399,38 +409,68 @@
         function openDrinks() { openModal('drinkModal'); }
 
         function showMenu(shopKey, btn) {
-            // Highlight nút chọn
             document.querySelectorAll('.shop-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
 
-            // Lấy tên quán đẹp hơn
             const shopNames = { dodo: "Đô Đô", toco: "TocoToco", bingxue: "BingXue" };
             currentShopName = shopNames[shopKey];
 
-            // Render món
             const container = document.getElementById('menu-container');
             container.innerHTML = "";
             
+            // Loop món có sẵn
             menus[shopKey].forEach(drink => {
                 const div = document.createElement('div');
                 div.className = 'menu-item';
                 div.innerHTML = `<span><i class="fa-solid fa-glass-water"></i> ${drink}</span> <i class="fa-solid fa-chevron-right" style="font-size:0.8rem; color:#ccc;"></i>`;
-                div.onclick = () => openOptionModal(drink);
+                div.onclick = () => openOptionModal(drink, false);
                 container.appendChild(div);
             });
+
+            // Thêm nút "Món khác (Tự nhập)" ở cuối
+            const divCustom = document.createElement('div');
+            divCustom.className = 'menu-item custom-item';
+            divCustom.innerHTML = `<span><i class="fa-solid fa-pen-to-square"></i> Món khác (Tự nhập)</span> <i class="fa-solid fa-plus"></i>`;
+            divCustom.onclick = () => openOptionModal(null, true);
+            container.appendChild(divCustom);
 
             container.style.display = "block";
             document.getElementById('menu-guide').style.display = "none";
         }
 
-        function openOptionModal(drinkName) {
-            currentDrinkName = drinkName;
-            document.getElementById('selected-drink-name').innerText = drinkName;
-            openModal('optionModal'); // Mở bảng chọn đường đá
+        function openOptionModal(drinkName, isCustom) {
+            const nameEl = document.getElementById('selected-drink-name');
+            const inputContainer = document.getElementById('custom-input-container');
+            const inputEl = document.getElementById('custom-drink-name');
+
+            if (isCustom) {
+                // Chế độ tự nhập
+                nameEl.style.display = 'none';
+                inputContainer.style.display = 'block';
+                inputEl.value = ""; // Xóa text cũ
+                currentDrinkName = "Món tự nhập"; // Placeholder
+            } else {
+                // Chế độ chọn món có sẵn
+                nameEl.style.display = 'block';
+                inputContainer.style.display = 'none';
+                nameEl.innerText = drinkName;
+                currentDrinkName = drinkName;
+            }
+            openModal('optionModal'); 
         }
 
         function confirmOrder() {
-            // Lấy giá trị đường đá
+            // Kiểm tra nếu là món tự nhập thì phải có text
+            const inputContainer = document.getElementById('custom-input-container');
+            if (inputContainer.style.display === 'block') {
+                const customName = document.getElementById('custom-drink-name').value.trim();
+                if (!customName) {
+                    alert("Bạn chưa nhập tên món!");
+                    return;
+                }
+                currentDrinkName = customName + " (Khách tự nhập)";
+            }
+
             const ice = document.querySelector('input[name="ice"]:checked').value;
             const sugar = document.querySelector('input[name="sugar"]:checked').value;
             
@@ -458,9 +498,8 @@
             });
         }
 
-        // --- 4. CÁC LOGIC CŨ (Gói quà, Nhạc...) ---
-        
-        // Nhạc
+        // --- 4. CÁC LOGIC CŨ (Gói quà, Nhạc, Gửi quà) ---
+        // (Giữ nguyên phần xử lý nhạc, gói quà, và form gửi quà đầu tiên)
         const songs = [
             { title: "Jingle Bells", src: "https://upload.wikimedia.org/wikipedia/commons/e/e8/Jingle_Bells_by_Kevin_MacLeod.ogg", author: "Kevin MacLeod" },
             { title: "We Wish You a Merry Christmas", src: "https://upload.wikimedia.org/wikipedia/commons/9/9b/We_Wish_You_a_Merry_Christmas_-_Kevin_MacLeod.ogg", author: "Kevin MacLeod" },
@@ -486,7 +525,6 @@
         audioPlayer.onpause = () => musicCard.classList.remove('music-playing');
         audioPlayer.onplay = () => musicCard.classList.add('music-playing');
 
-        // Gói quà
         let selectedWrapStyle = "";
         function selectWrap(element, styleName) {
             document.querySelectorAll('.wrap-item').forEach(item => item.classList.remove('active'));
@@ -497,13 +535,11 @@
             if(!selectedWrapStyle) { alert("Vui lòng chọn mẫu giấy!"); return; }
             const note = document.getElementById('gift-note').value;
             const detail = `${selectedWrapStyle}. Lời nhắn: "${note}"`;
-            
             if(PUBLIC_KEY !== "YOUR_PUBLIC_KEY") sendToOwner("YÊU CẦU GÓI QUÀ", detail);
             alert(`Đã nhận yêu cầu gói quà! 🎁`);
             closeModal('wrapModal');
         }
 
-        // Gửi Quà (Form đầu tiên)
         function sendEmail(e) {
             e.preventDefault();
             const btn = document.getElementById('btn-submit');
@@ -513,23 +549,10 @@
                 .catch((err) => { alert('Lỗi: ' + JSON.stringify(err)); btn.innerText = "Gửi Lại"; });
         }
 
-        // Modal Helpers
-        function openModal(id) {
-            const modal = document.getElementById(id);
-            modal.style.display = "flex";
-            setTimeout(() => modal.classList.add('show'), 10);
-        }
-        function closeModal(id) {
-            const modal = document.getElementById(id);
-            modal.classList.remove('show');
-            setTimeout(() => modal.style.display = "none", 300);
-        }
-        window.onclick = function(event) {
-            if (event.target.classList.contains('modal')) closeModal(event.target.id);
-        }
-        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
-            document.getElementById('nav-menu').classList.toggle('active');
-        });
+        function openModal(id) { const modal = document.getElementById(id); modal.style.display = "flex"; setTimeout(() => modal.classList.add('show'), 10); }
+        function closeModal(id) { const modal = document.getElementById(id); modal.classList.remove('show'); setTimeout(() => modal.style.display = "none", 300); }
+        window.onclick = function(event) { if (event.target.classList.contains('modal')) closeModal(event.target.id); }
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => { document.getElementById('nav-menu').classList.toggle('active'); });
         
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('visible'); });
