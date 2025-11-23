@@ -88,6 +88,10 @@
         .feature-card.visible { opacity: 1; transform: translateY(0); }
         .feature-icon { font-size: 3rem; color: var(--accent-color); margin-bottom: 1rem; transition: 0.3s; }
         
+        /* Animation Music Icon */
+        @keyframes dance { 0%, 100% {transform: rotate(0);} 25% {transform: rotate(-10deg);} 75% {transform: rotate(10deg);} }
+        .music-playing .feature-icon { animation: dance 1s infinite ease-in-out; color: var(--primary-color); }
+
         /* GALLERY */
         .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
         .gallery-item { position: relative; border-radius: 15px; overflow: hidden; height: 300px; cursor: pointer; }
@@ -124,19 +128,42 @@
         .close-modal { position: absolute; top: 10px; right: 15px; font-size: 2rem; cursor: pointer; color: var(--text-color); }
         .close-modal:hover { color: var(--primary-color); }
 
-        /* CSS CHO PHẦN NHẠC (JACK 97) */
-        .music-list { list-style: none; margin-top: 20px; text-align: left; }
-        .music-item {
-            padding: 10px; border-bottom: 1px solid #ddd; cursor: pointer; display: flex; justify-content: space-between; align-items: center;
-            transition: 0.2s;
+        /* CSS MỚI CHO CÁC LỰA CHỌN (OPTIONS) */
+        /* Grid cho Menu & Wrap */
+        .option-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 20px; text-align: left; }
+        
+        /* Thẻ Đồ uống */
+        .drink-item { 
+            background: white; padding: 15px; border-radius: 10px; border: 2px solid transparent; 
+            cursor: pointer; transition: 0.2s; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
-        .music-item:hover { background-color: #eee; color: var(--primary-color); }
-        .music-item.active { background-color: var(--primary-color); color: white; border-radius: 5px; }
-        .video-container {
-            position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; margin-bottom: 20px; border-radius: 10px; background: black;
-        }
-        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+        .drink-item:hover { transform: translateY(-3px); }
+        .drink-item.active { border-color: var(--primary-color); background-color: #fff0f0; }
+        .drink-icon { font-size: 2rem; color: var(--secondary-color); margin-bottom: 5px; }
+        .drink-price { font-weight: bold; color: var(--primary-color); display: block; margin-top: 5px; }
 
+        /* Thẻ Gói quà */
+        .wrap-item { 
+            height: 80px; border-radius: 10px; cursor: pointer; border: 3px solid transparent; 
+            transition: 0.2s; position: relative;
+        }
+        .wrap-item:hover { transform: scale(1.05); }
+        .wrap-item.active { border-color: var(--accent-color); transform: scale(1.05); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        /* Tạo họa tiết giấy gói bằng CSS Gradient */
+        .pattern-1 { background: repeating-linear-gradient(45deg, #D42426, #D42426 10px, #fff 10px, #fff 20px); }
+        .pattern-2 { background: radial-gradient(#fff 20%, transparent 20%), #165B33; background-size: 20px 20px; }
+        .pattern-3 { background: linear-gradient(135deg, #F8B229 25%, transparent 25%) -10px 0, linear-gradient(225deg, #F8B229 25%, transparent 25%) -10px 0, linear-gradient(315deg, #F8B229 25%, transparent 25%), linear-gradient(45deg, #F8B229 25%, transparent 25%); background-size: 20px 20px; background-color: #fff; }
+        .pattern-4 { background: repeating-linear-gradient(0deg, #2C3E50, #2C3E50 2px, #fff 2px, #fff 10px); }
+
+        /* Nhạc List */
+        .music-list { list-style: none; margin-top: 10px; text-align: left; max-height: 250px; overflow-y: auto; }
+        .music-item {
+            padding: 12px; border-bottom: 1px dashed #ccc; cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+            transition: 0.2s; border-radius: 8px; margin-bottom: 5px;
+        }
+        .music-item:hover { background-color: #f0e6d2; }
+        .music-item.active { background-color: var(--primary-color); color: white; border: none; }
+        
         /* MOBILE */
         @media (max-width: 768px) {
             .menu-toggle { display: block; }
@@ -147,6 +174,7 @@
             }
             .nav-links.active { right: 0; }
             .hero-content h1 { font-size: 2.5rem; }
+            .option-grid { grid-template-columns: 1fr; } /* Mobile hiển thị 1 cột */
         }
     </style>
 </head>
@@ -192,11 +220,11 @@
                 <p>Chọn mẫu giấy gói quà xinh xắn của riêng bạn.</p>
             </div>
 
-            <div class="feature-card" onclick="openModal('musicModal')">
+            <div class="feature-card" id="musicCard" onclick="openModal('musicModal')">
                 <i class="feature-icon fa-solid fa-music"></i>
-                <h3>Nhạc Jack - J97</h3>
-                <p>Tuyển tập những bản Hit hay nhất của Jack.</p>
-                <span style="font-size: 0.8rem; color: var(--primary-color);">(Bấm để nghe nhạc)</span>
+                <h3>Nhạc Giáng Sinh</h3>
+                <p>Giai điệu Giáng Sinh kinh điển (Không bản quyền).</p>
+                <span style="font-size: 0.8rem; color: var(--primary-color);">(Bấm để nghe)</span>
             </div>
         </div>
     </section>
@@ -242,122 +270,187 @@
                 
                 <button type="submit" id="btn-submit" class="btn btn-primary" style="width: 100%;">Gửi Quà Ngay</button>
             </form>
-            <p id="email-status" style="margin-top:10px; font-size: 0.9rem; color: #666;"></p>
         </div>
     </div>
 
     <div id="musicModal" class="modal">
-        <div class="modal-content" style="max-width: 600px;">
-            <span class="close-modal" onclick="closeModal('musicModal'); stopVideo();">&times;</span>
-            <h3 style="margin-bottom: 15px;">Playlist Jack - J97</h3>
-            
-            <div class="video-container">
-                <iframe id="youtube-player" src="https://www.youtube.com/embed/Q0zqug_H7h8?enablejsapi=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <div class="modal-content" style="max-width: 500px;">
+            <span class="close-modal" onclick="closeModal('musicModal')">&times;</span>
+            <i class="fa-solid fa-music" style="font-size: 3rem; color: var(--accent-color); margin-bottom: 10px;"></i>
+            <h3 style="margin-bottom: 15px;">Giai Điệu Giáng Sinh</h3>
+            <div class="music-player-ui">
+                <audio id="audioPlayer" controls>Trình duyệt không hỗ trợ phát nhạc.</audio>
             </div>
-
-            <ul class="music-list">
-                <li class="music-item" onclick="playSong('q8X9F5_6wZ0', this)">
-                    <span><i class="fa-solid fa-play"></i> Thiên Lý Ơi</span>
-                    <span style="font-size: 0.8em; color: gray;">5:04</span>
-                </li>
-                <li class="music-item" onclick="playSong('Q0zqug_H7h8', this)">
-                    <span><i class="fa-solid fa-play"></i> Đom Đóm</span>
-                    <span style="font-size: 0.8em; color: gray;">5:53</span>
-                </li>
-                <li class="music-item" onclick="playSong('3Xcdi67g7b0', this)">
-                    <span><i class="fa-solid fa-play"></i> Hoa Hải Đường</span>
-                    <span style="font-size: 0.8em; color: gray;">4:16</span>
-                </li>
-                <li class="music-item" onclick="playSong('knW7-x7Y7RE', this)">
-                    <span><i class="fa-solid fa-play"></i> Hồng Nhan</span>
-                    <span style="font-size: 0.8em; color: gray;">3:23</span>
-                </li>
-            </ul>
+            <ul class="music-list" id="playlist"></ul>
         </div>
     </div>
 
     <div id="drinkModal" class="modal">
-        <div class="modal-content" style="max-width: 400px;">
+        <div class="modal-content" style="max-width: 600px;">
             <span class="close-modal" onclick="closeModal('drinkModal')">&times;</span>
-            <i class="fa-solid fa-mug-hot" style="font-size: 3rem; color: var(--secondary-color);"></i>
+            <i class="fa-solid fa-mug-hot" style="font-size: 2.5rem; color: var(--secondary-color);"></i>
             <h3>Menu Giáng Sinh</h3>
-            <div style="text-align: left; margin-top: 15px;">
-                <p>☕ Cacao nóng: 55k</p>
-                <p>🍵 Trà cam quế: 45k</p>
+            <p>Chọn thức uống bạn yêu thích:</p>
+            
+            <div class="option-grid">
+                <div class="drink-item" onclick="selectDrink(this, 'Cacao Nóng Kẹo Dẻo')">
+                    <i class="drink-icon fa-solid fa-cookie-bite"></i>
+                    <div>Cacao Kẹo Dẻo</div>
+                    <span class="drink-price">55.000đ</span>
+                </div>
+                <div class="drink-item" onclick="selectDrink(this, 'Trà Cam Quế')">
+                    <i class="drink-icon fa-solid fa-leaf"></i>
+                    <div>Trà Cam Quế</div>
+                    <span class="drink-price">45.000đ</span>
+                </div>
+                <div class="drink-item" onclick="selectDrink(this, 'Rượu Vang Nóng')">
+                    <i class="drink-icon fa-solid fa-wine-glass"></i>
+                    <div>Vang Nóng (Glühwein)</div>
+                    <span class="drink-price">70.000đ</span>
+                </div>
+                <div class="drink-item" onclick="selectDrink(this, 'Latte Bánh Gừng')">
+                    <i class="drink-icon fa-solid fa-mug-saucer"></i>
+                    <div>Latte Bánh Gừng</div>
+                    <span class="drink-price">60.000đ</span>
+                </div>
             </div>
-            <button class="btn btn-primary" style="width: 100%; margin-top: 15px;" onclick="closeModal('drinkModal')">Đóng</button>
+
+            <button class="btn btn-primary" style="width: 100%; margin-top: 20px;" onclick="confirmDrink()">Đặt Món Ngay</button>
         </div>
     </div>
 
     <div id="wrapModal" class="modal">
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal('wrapModal')">&times;</span>
-            <h3>Đã chọn giấy gói!</h3>
-            <p>Chúng tôi sẽ gói quà cẩn thận cho bạn.</p>
+            <i class="fa-solid fa-gift" style="font-size: 2.5rem; color: var(--primary-color);"></i>
+            <h3>Xưởng Gói Quà</h3>
+            <p>Chọn mẫu giấy gói:</p>
+            
+            <div class="option-grid">
+                <div class="wrap-item pattern-1" onclick="selectWrap(this, 'Kẻ Sọc Đỏ Trắng')"></div>
+                <div class="wrap-item pattern-2" onclick="selectWrap(this, 'Xanh Lá Chấm Bi')"></div>
+                <div class="wrap-item pattern-3" onclick="selectWrap(this, 'Vàng Kim Cương')"></div>
+                <div class="wrap-item pattern-4" onclick="selectWrap(this, 'Xanh Đêm Hiện Đại')"></div>
+            </div>
+
+            <input type="text" id="gift-note" placeholder="Viết lời nhắn nhỏ lên quà..." style="width: 100%; padding: 12px; margin-top: 20px; border: 1px solid #ddd; border-radius: 8px;">
+
+            <button class="btn btn-primary" style="width: 100%; margin-top: 15px;" onclick="confirmWrap()">Xác Nhận Gói Quà</button>
         </div>
     </div>
 
     <script>
-        // --- CẤU HÌNH EMAILJS (QUAN TRỌNG) ---
-        // Bạn cần đăng ký tại https://www.emailjs.com/ (Miễn phí)
-        // Sau đó thay thế 3 giá trị dưới đây bằng ID của bạn:
-        const PUBLIC_KEY = "YOUR_PUBLIC_KEY"; // Ví dụ: "user_123456..."
-        const SERVICE_ID = "YOUR_SERVICE_ID"; // Ví dụ: "service_gmail"
-        const TEMPLATE_ID = "YOUR_TEMPLATE_ID"; // Ví dụ: "template_christmas"
+        // --- 1. CẤU HÌNH EMAILJS ---
+        const PUBLIC_KEY = "YOUR_PUBLIC_KEY"; 
+        const SERVICE_ID = "YOUR_SERVICE_ID";
+        const TEMPLATE_ID = "YOUR_TEMPLATE_ID";
 
-        (function(){
-            emailjs.init(PUBLIC_KEY);
-        })();
+        (function(){ emailjs.init(PUBLIC_KEY); })();
 
         function sendEmail(e) {
             e.preventDefault();
             const btn = document.getElementById('btn-submit');
-            const status = document.getElementById('email-status');
             
-            // Nếu chưa thay key thì báo lỗi giả lập để test
             if(PUBLIC_KEY === "YOUR_PUBLIC_KEY") {
-                alert("LƯU Ý: Bạn chưa điền Key của EmailJS vào code.\nCode sẽ chạy chế độ giả lập 'Gửi thành công'.");
+                alert("MÔ PHỎNG: Gửi quà thành công!\n(Hãy thay API Key để gửi thật)");
                 closeModal('giftModal');
+                e.target.reset();
                 return;
             }
 
             btn.innerText = "Đang gửi...";
-            
-            // Gửi email thực sự
             emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, e.target)
-                .then(function() {
+                .then(() => {
                     alert('Gửi quà thành công! Hãy kiểm tra Email.');
                     closeModal('giftModal');
                     btn.innerText = "Gửi Quà Ngay";
                     e.target.reset();
-                }, function(error) {
+                }, (error) => {
                     alert('Lỗi: ' + JSON.stringify(error));
                     btn.innerText = "Gửi Lại";
                 });
         }
 
-        // --- XỬ LÝ VIDEO NHẠC JACK ---
-        function playSong(videoId, element) {
-            // Đổi link iframe để phát bài mới
-            const iframe = document.getElementById('youtube-player');
-            iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&enablejsapi=1`;
+        // --- 2. XỬ LÝ NHẠC ---
+        const songs = [
+            { title: "Jingle Bells", src: "https://upload.wikimedia.org/wikipedia/commons/e/e8/Jingle_Bells_by_Kevin_MacLeod.ogg", author: "Kevin MacLeod" },
+            { title: "We Wish You a Merry Christmas", src: "https://upload.wikimedia.org/wikipedia/commons/9/9b/We_Wish_You_a_Merry_Christmas_-_Kevin_MacLeod.ogg", author: "Kevin MacLeod" },
+            { title: "Deck the Halls", src: "https://upload.wikimedia.org/wikipedia/commons/c/c8/Deck_the_Halls_A_-_Kevin_MacLeod.ogg", author: "Kevin MacLeod" },
+            { title: "Silent Night", src: "https://upload.wikimedia.org/wikipedia/commons/6/69/Silent_Night_-_Kevin_MacLeod.ogg", author: "Kevin MacLeod" },
+            { title: "Dance of the Sugar Plum Fairy", src: "https://upload.wikimedia.org/wikipedia/commons/4/4f/Dance_of_the_Sugar_Plum_Fairy_by_Kevin_MacLeod.ogg", author: "Tchaikovsky" }
+        ];
+
+        const audioPlayer = document.getElementById('audioPlayer');
+        const playlist = document.getElementById('playlist');
+        const musicCard = document.getElementById('musicCard');
+
+        songs.forEach((song, index) => {
+            const li = document.createElement('li');
+            li.classList.add('music-item');
+            li.innerHTML = `<span><i class="fa-solid fa-music"></i> ${song.title}</span> <span style="font-size:0.8em; color:#666;">${song.author}</span>`;
+            li.onclick = () => playSong(index);
+            playlist.appendChild(li);
+        });
+
+        function playSong(index) {
+            const items = document.querySelectorAll('.music-item');
+            items.forEach(i => i.classList.remove('active'));
+            items[index].classList.add('active');
+            audioPlayer.src = songs[index].src;
+            audioPlayer.play();
+            musicCard.classList.add('music-playing');
+        }
+        audioPlayer.onpause = () => musicCard.classList.remove('music-playing');
+        audioPlayer.onplay = () => musicCard.classList.add('music-playing');
+
+        // --- 3. LOGIC CHỌN ĐỒ UỐNG & GÓI QUÀ ---
+        let selectedDrinkName = "";
+        let selectedWrapStyle = "";
+
+        function selectDrink(element, name) {
+            // Xóa active cũ
+            document.querySelectorAll('.drink-item').forEach(item => item.classList.remove('active'));
+            // Thêm active mới
+            element.classList.add('active');
+            selectedDrinkName = name;
+        }
+
+        function confirmDrink() {
+            if(!selectedDrinkName) {
+                alert("Bạn chưa chọn đồ uống nào cả!");
+                return;
+            }
+            alert(`Tuyệt vời! Bạn đã đặt món: ${selectedDrinkName}.\nVui lòng chờ trong giây lát... ☕`);
+            closeModal('drinkModal');
+            // Reset
+            selectedDrinkName = "";
+            document.querySelectorAll('.drink-item').forEach(item => item.classList.remove('active'));
+        }
+
+        function selectWrap(element, styleName) {
+            document.querySelectorAll('.wrap-item').forEach(item => item.classList.remove('active'));
+            element.classList.add('active');
+            selectedWrapStyle = styleName;
+        }
+
+        function confirmWrap() {
+            if(!selectedWrapStyle) {
+                alert("Vui lòng chọn một mẫu giấy gói!");
+                return;
+            }
+            const note = document.getElementById('gift-note').value;
+            let msg = `Đã chọn gói quà kiểu: ${selectedWrapStyle}.`;
+            if(note) msg += `\nKèm lời nhắn: "${note}"`;
             
-            // Highlight bài đang hát
-            document.querySelectorAll('.music-item').forEach(item => item.classList.remove('active'));
-            if(element) element.classList.add('active');
+            alert(msg + "\nChúng tôi sẽ thực hiện ngay! 🎁");
+            closeModal('wrapModal');
+            // Reset
+            selectedWrapStyle = "";
+            document.getElementById('gift-note').value = "";
+            document.querySelectorAll('.wrap-item').forEach(item => item.classList.remove('active'));
         }
 
-        function stopVideo() {
-            // Dừng nhạc khi đóng modal
-            const iframe = document.getElementById('youtube-player');
-            iframe.src = iframe.src.replace("autoplay=1", "autoplay=0"); 
-            // Reset src để tắt tiếng hẳn
-            const currentSrc = iframe.src;
-            iframe.src = "";
-            iframe.src = currentSrc;
-        }
-
-        // --- MODAL CHUNG ---
+        // --- 4. MODAL CHUNG ---
         function openModal(id) {
             const modal = document.getElementById(id);
             modal.style.display = "flex";
@@ -371,8 +464,6 @@
         }
         window.onclick = function(event) {
             if (event.target.classList.contains('modal')) {
-                // Nếu đóng modal nhạc thì dừng nhạc
-                if(event.target.id === 'musicModal') stopVideo();
                 event.target.classList.remove('show');
                 setTimeout(() => event.target.style.display = "none", 300);
             }
