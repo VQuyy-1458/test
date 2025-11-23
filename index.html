@@ -1,28 +1,265 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chúc Mừng Giáng Sinh</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giáng Sinh An Lành 2024</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- PHẦN CSS (STYLES) -->
+    <style>
+        /* --- 1. BIẾN MÀU SẮC & CẤU HÌNH CHUNG --- */
+        :root {
+            --primary-color: #D42426; /* Đỏ */
+            --secondary-color: #165B33; /* Xanh lá */
+            --accent-color: #F8B229; /* Vàng */
+            --bg-color: #FFFBF0; /* Trắng kem */
+            --text-color: #2C3E50;
+            --white: #ffffff;
+            --shadow: 0 4px 15px rgba(0,0,0,0.1);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3 { font-family: 'Cinzel', serif; color: var(--secondary-color); }
+        ul { list-style: none; }
+        a { text-decoration: none; color: inherit; }
+        img { max-width: 100%; display: block; }
+
+        /* HEADER */
+        header {
+            position: fixed; top: 0; width: 100%;
+            background: rgba(255, 251, 240, 0.95);
+            padding: 1rem 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            backdrop-filter: blur(5px);
+        }
+        .logo { font-size: 1.5rem; font-weight: 700; color: var(--primary-color); display: flex; align-items: center; gap: 10px; }
+        .nav-links { display: flex; gap: 2rem; }
+        .nav-links a { font-weight: 600; position: relative; transition: var(--transition); }
+        .nav-links a:hover { color: var(--primary-color); }
+        
+        .menu-toggle { display: none; cursor: pointer; font-size: 1.5rem; color: var(--secondary-color); background: none; border: none; }
+
+        /* HERO */
+        #hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.4)), 
+                        url('https://images.unsplash.com/photo-1512389142860-9c449e58a543?auto=format&fit=crop&q=80&w=1920');
+            background-size: cover; background-position: center; background-attachment: fixed;
+            display: flex; align-items: center; justify-content: center; text-align: center;
+            color: var(--white); padding: 0 1rem;
+        }
+        .hero-content h1 { font-size: 3.5rem; margin-bottom: 1rem; color: var(--white); text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        
+        /* BUTTONS */
+        .btn { padding: 12px 30px; border-radius: 50px; font-weight: 600; cursor: pointer; transition: var(--transition); border: 2px solid transparent; margin: 5px; }
+        .btn-primary { background-color: var(--primary-color); color: var(--white); }
+        .btn-primary:hover { transform: scale(1.05); background-color: #b01c1e; }
+        .btn-secondary { background-color: transparent; border-color: var(--white); color: var(--white); }
+        .btn-secondary:hover { background-color: var(--white); color: var(--secondary-color); }
+
+        /* SECTIONS */
+        section { padding: 5rem 5%; }
+        .section-title { text-align: center; margin-bottom: 3rem; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
+        
+        .feature-card {
+            background: var(--white); padding: 2rem; border-radius: 15px; text-align: center; box-shadow: var(--shadow);
+            transform: translateY(30px); opacity: 0; transition: var(--transition);
+        }
+        .feature-card.visible { opacity: 1; transform: translateY(0); }
+        .feature-icon { font-size: 3rem; color: var(--accent-color); margin-bottom: 1rem; }
+
+        /* GALLERY */
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+        .gallery-item { position: relative; border-radius: 15px; overflow: hidden; height: 300px; cursor: pointer; }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .gallery-item:hover img { transform: scale(1.1); }
+        .overlay {
+            position: absolute; bottom: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+            display: flex; align-items: flex-end; padding: 20px; opacity: 0; transition: var(--transition);
+        }
+        .gallery-item:hover .overlay { opacity: 1; }
+        .overlay-text { color: var(--white); transform: translateY(20px); transition: var(--transition); }
+        .gallery-item:hover .overlay-text { transform: translateY(0); }
+
+        /* MODAL */
+        .modal {
+            display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.6); backdrop-filter: blur(5px);
+            justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s ease;
+        }
+        .modal.show { display: flex; opacity: 1; }
+        .modal-content {
+            background-color: var(--bg-color); padding: 2.5rem; border-radius: 15px; width: 90%; max-width: 500px;
+            position: relative; transform: scale(0.7); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center; border: 2px solid var(--accent-color);
+        }
+        .modal.show .modal-content { transform: scale(1); }
+        .close-modal { position: absolute; top: 15px; right: 20px; font-size: 2rem; cursor: pointer; }
+        .modal input { width: 100%; padding: 12px; margin: 15px 0; border: 1px solid #ddd; border-radius: 8px; }
+        .modal .btn { width: 100%; margin: 0; }
+
+        /* FOOTER */
+        footer { background-color: var(--secondary-color); color: var(--white); text-align: center; padding: 3rem 5%; }
+        .footer-links a { margin: 0 10px; font-size: 1.5rem; color: var(--white); }
+        
+        /* MOBILE */
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            .nav-links {
+                position: fixed; top: 0; right: -100%; height: 100vh; width: 75%;
+                background-color: var(--bg-color); flex-direction: column; justify-content: center; align-items: center;
+                box-shadow: -5px 0 15px rgba(0,0,0,0.1); transition: right 0.4s ease-in-out;
+            }
+            .nav-links.active { right: 0; }
+            .hero-content h1 { font-size: 2.5rem; }
+        }
+    </style>
 </head>
 <body>
-  <h1>🎄 Chúc Mừng Giáng Sinh 🎅</h1>
 
-  <div class="tree">
-    <div class="star">★</div>
-    <div class="layers">
-      <div class="layer layer1"></div>
-      <div class="layer layer2"></div>
-      <div class="layer layer3"></div>
-      <div class="layer layer4"></div>
+    <!-- Header -->
+    <header>
+        <div class="logo"><i class="fa-solid fa-sleigh"></i> XmasDream</div>
+        <button class="menu-toggle" id="mobile-menu-btn"><i class="fa-solid fa-bars"></i></button>
+        <nav>
+            <ul class="nav-links" id="nav-menu">
+                <li><a href="#hero">Trang chủ</a></li>
+                <li><a href="#features">Điều kỳ diệu</a></li>
+                <li><a href="#gallery">Khoảnh khắc</a></li>
+                <li><a href="#contact">Gửi lời chúc</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero -->
+    <section id="hero">
+        <div class="hero-content">
+            <h1>Giáng Sinh Ấm Áp</h1>
+            <p>Mùa của yêu thương, của những cái ôm và những món quà ý nghĩa.</p>
+            <div class="hero-buttons">
+                <button class="btn btn-primary" onclick="document.getElementById('features').scrollIntoView()">Khám phá ngay</button>
+                <button class="btn btn-secondary" id="btn-gift">Nhận quà tặng</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features">
+        <div class="section-title"><h2>Hương Vị Lễ Hội</h2></div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <i class="feature-icon fa-solid fa-mug-hot"></i>
+                <h3>Đồ Uống Nóng</h3>
+                <p>Thưởng thức cacao nóng hổi bên lò sưởi.</p>
+            </div>
+            <div class="feature-card">
+                <i class="feature-icon fa-solid fa-gift"></i>
+                <h3>Gói Quà Miễn Phí</h3>
+                <p>Dịch vụ gói quà nghệ thuật trao gửi yêu thương.</p>
+            </div>
+            <div class="feature-card">
+                <i class="feature-icon fa-solid fa-music"></i>
+                <h3>Nhạc Giáng Sinh</h3>
+                <p>Playlist những bản nhạc bất hủ vang lên.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery -->
+    <section id="gallery" style="background: #fff;">
+        <div class="section-title"><h2>Góc Ảnh Giáng Sinh</h2></div>
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1545609886-f404414f6b67?auto=format&fit=crop&q=80&w=800" alt="Bánh quy">
+                <div class="overlay"><div class="overlay-text"><h3>Ngọt Ngào</h3><p>Bánh quy gừng</p></div></div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1544976735-a13180299f2c?auto=format&fit=crop&q=80&w=800" alt="Cây thông">
+                <div class="overlay"><div class="overlay-text"><h3>Rực Rỡ</h3><p>Đèn trang trí</p></div></div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1516723225881-863a35607333?auto=format&fit=crop&q=80&w=800" alt="Tuyết">
+                <div class="overlay"><div class="overlay-text"><h3>An Lành</h3><p>Đêm tuyết trắng</p></div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <h2>XmasDream</h2>
+        <p>Chúc bạn một mùa Giáng Sinh an lành.</p>
+        <div class="footer-links" style="margin-top: 20px;">
+            <a href="#"><i class="fa-brands fa-facebook"></i></a>
+            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#"><i class="fa-brands fa-twitter"></i></a>
+        </div>
+    </footer>
+
+    <!-- Modal -->
+    <div id="giftModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <i class="fa-solid fa-candy-cane" style="font-size: 4rem; color: #D42426; margin-bottom: 1rem;"></i>
+            <h3>Quà Tặng Bí Mật!</h3>
+            <p>Nhập email để nhận bộ thiệp Giáng Sinh điện tử!</p>
+            <form onsubmit="event.preventDefault(); alert('Đã gửi thành công!'); document.querySelector('.modal').classList.remove('show'); setTimeout(()=>document.querySelector('.modal').style.display='none',300);">
+                <input type="email" placeholder="Email của bạn..." required>
+                <button type="submit" class="btn btn-primary">Gửi ngay</button>
+            </form>
+        </div>
     </div>
-    <div class="trunk"></div>
-    <div class="lights"></div>
-  </div>
 
-  <button id="changeColorBtn">Đổi nền Giáng Sinh</button>
+    <!-- PHẦN JAVASCRIPT -->
+    <script>
+        // Menu Mobile
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const navLinks = document.getElementById('nav-menu');
+        menuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            menuBtn.innerHTML = navLinks.classList.contains('active') ? '<i class="fa-solid fa-xmark"></i>' : '<i class="fa-solid fa-bars"></i>';
+        });
+        document.querySelectorAll('.nav-links a').forEach(l => l.addEventListener('click', () => {
+            navLinks.classList.remove('active');
+            menuBtn.innerHTML = '<i class="fa-solid fa-bars"></i>';
+        }));
 
-  <script src="script.js"></script>
+        // Modal
+        const modal = document.getElementById('giftModal');
+        const openBtn = document.getElementById('btn-gift');
+        const closeBtn = document.querySelector('.close-modal');
+        
+        openBtn.addEventListener('click', () => { modal.style.display="flex"; setTimeout(()=>modal.classList.add('show'),10); });
+        const closeModal = () => { modal.classList.remove('show'); setTimeout(()=>modal.style.display="none",300); };
+        closeBtn.addEventListener('click', closeModal);
+        window.addEventListener('click', (e) => { if(e.target == modal) closeModal(); });
+
+        // Animation Scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('visible'); });
+        }, { threshold: 0.2 });
+        document.querySelectorAll('.feature-card').forEach(card => observer.observe(card));
+    </script>
 </body>
 </html>
