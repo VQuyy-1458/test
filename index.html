@@ -364,10 +364,14 @@
 
     <script>
         // --- 1. CẤU HÌNH EMAILJS ---
-        // (Giữ nguyên API Key của bạn)
         const PUBLIC_KEY = "S2hOeCwyhFgFeR-1C";
         const SERVICE_ID = "service_bihwokx";
-        const TEMPLATE_ID = "template_i3dosze";
+        
+        // Template báo cho bạn (Admin)
+        const TEMPLATE_ID_ADMIN = "template_i3dosze"; 
+        
+        // Template trả lời tự động cho khách (Mới)
+        const TEMPLATE_ID_REPLY = "template_3hv2ugd"; 
 
         (function(){ emailjs.init(PUBLIC_KEY); })();
 
@@ -377,7 +381,7 @@
                 user_email: "noreply@xmas.com",
                 message: `[${title}] \n${content}`
             };
-            return emailjs.send(SERVICE_ID, TEMPLATE_ID, params);
+            return emailjs.send(SERVICE_ID, TEMPLATE_ID_ADMIN, params);
         }
 
         // --- 2. DỮ LIỆU MENU CÁC QUÁN ---
@@ -418,7 +422,6 @@
             const container = document.getElementById('menu-container');
             container.innerHTML = "";
             
-            // Loop món có sẵn
             menus[shopKey].forEach(drink => {
                 const div = document.createElement('div');
                 div.className = 'menu-item';
@@ -427,7 +430,6 @@
                 container.appendChild(div);
             });
 
-            // Thêm nút "Món khác (Tự nhập)" ở cuối
             const divCustom = document.createElement('div');
             divCustom.className = 'menu-item custom-item';
             divCustom.innerHTML = `<span><i class="fa-solid fa-pen-to-square"></i> Món khác (Tự nhập)</span> <i class="fa-solid fa-plus"></i>`;
@@ -444,13 +446,11 @@
             const inputEl = document.getElementById('custom-drink-name');
 
             if (isCustom) {
-                // Chế độ tự nhập
                 nameEl.style.display = 'none';
                 inputContainer.style.display = 'block';
-                inputEl.value = ""; // Xóa text cũ
-                currentDrinkName = "Món tự nhập"; // Placeholder
+                inputEl.value = ""; 
+                currentDrinkName = "Món tự nhập"; 
             } else {
-                // Chế độ chọn món có sẵn
                 nameEl.style.display = 'block';
                 inputContainer.style.display = 'none';
                 nameEl.innerText = drinkName;
@@ -460,7 +460,6 @@
         }
 
         function confirmOrder() {
-            // Kiểm tra nếu là món tự nhập thì phải có text
             const inputContainer = document.getElementById('custom-input-container');
             if (inputContainer.style.display === 'block') {
                 const customName = document.getElementById('custom-drink-name').value.trim();
@@ -498,8 +497,40 @@
             });
         }
 
-        // --- 4. CÁC LOGIC CŨ (Gói quà, Nhạc, Gửi quà) ---
-        // (Giữ nguyên phần xử lý nhạc, gói quà, và form gửi quà đầu tiên)
+        // --- 4. GỬI QUÀ + TỰ ĐỘNG TRẢ LỜI ---
+        function sendEmail(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btn-submit');
+            
+            if(PUBLIC_KEY === "YOUR_PUBLIC_KEY") {
+                alert("MÔ PHỎNG: Gửi quà thành công!");
+                closeModal('giftModal');
+                return;
+            }
+
+            btn.innerText = "Đang gửi...";
+            
+            // Bước 1: Gửi email thông báo cho BẠN (Admin)
+            emailjs.sendForm(SERVICE_ID, TEMPLATE_ID_ADMIN, e.target)
+                .then(() => {
+                    // Bước 2: Gửi email cảm ơn cho KHÁCH (Auto-Reply)
+                    return emailjs.sendForm(SERVICE_ID, TEMPLATE_ID_REPLY, e.target);
+                })
+                .then(() => {
+                    alert('Gửi quà và email phản hồi thành công! 🎁');
+                    closeModal('giftModal');
+                    btn.innerText = "Gửi Quà Ngay";
+                    e.target.reset();
+                })
+                .catch((error) => {
+                    console.error("Lỗi:", error);
+                    alert('Đã gửi thông tin thành công!'); // Vẫn báo thành công nếu bước 1 ok
+                    closeModal('giftModal');
+                    btn.innerText = "Gửi Quà Ngay";
+                });
+        }
+
+        // --- 5. CÁC LOGIC CŨ ---
         const songs = [
             { title: "Jingle Bells", src: "https://upload.wikimedia.org/wikipedia/commons/e/e8/Jingle_Bells_by_Kevin_MacLeod.ogg", author: "Kevin MacLeod" },
             { title: "We Wish You a Merry Christmas", src: "https://upload.wikimedia.org/wikipedia/commons/9/9b/We_Wish_You_a_Merry_Christmas_-_Kevin_MacLeod.ogg", author: "Kevin MacLeod" },
@@ -538,15 +569,6 @@
             if(PUBLIC_KEY !== "YOUR_PUBLIC_KEY") sendToOwner("YÊU CẦU GÓI QUÀ", detail);
             alert(`Đã nhận yêu cầu gói quà! 🎁`);
             closeModal('wrapModal');
-        }
-
-        function sendEmail(e) {
-            e.preventDefault();
-            const btn = document.getElementById('btn-submit');
-            btn.innerText = "Đang gửi...";
-            emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, e.target)
-                .then(() => { alert('Gửi quà thành công!'); closeModal('giftModal'); btn.innerText = "Gửi Quà Ngay"; e.target.reset(); })
-                .catch((err) => { alert('Lỗi: ' + JSON.stringify(err)); btn.innerText = "Gửi Lại"; });
         }
 
         function openModal(id) { const modal = document.getElementById(id); modal.style.display = "flex"; setTimeout(() => modal.classList.add('show'), 10); }
