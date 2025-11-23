@@ -11,13 +11,15 @@
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
     <style>
-        /* --- 1. BIẾN MÀU SẮC & CẤU HÌNH CHUNG --- */
+        /* --- 1. CẤU HÌNH CHUNG --- */
         :root {
-            --primary-color: #D42426; /* Đỏ */
-            --secondary-color: #165B33; /* Xanh lá */
-            --accent-color: #F8B229; /* Vàng */
-            --bg-color: #FFFBF0; /* Trắng kem */
+            --primary-color: #D42426;
+            --secondary-color: #165B33;
+            --accent-color: #F8B229;
+            --bg-color: #FFFBF0;
             --text-color: #2C3E50;
             --white: #ffffff;
             --shadow: 0 4px 15px rgba(0,0,0,0.1);
@@ -53,7 +55,6 @@
         .nav-links { display: flex; gap: 2rem; }
         .nav-links a { font-weight: 600; position: relative; transition: var(--transition); }
         .nav-links a:hover { color: var(--primary-color); }
-        
         .menu-toggle { display: none; cursor: pointer; font-size: 1.5rem; color: var(--secondary-color); background: none; border: none; }
 
         /* HERO */
@@ -67,14 +68,13 @@
         }
         .hero-content h1 { font-size: 3.5rem; margin-bottom: 1rem; color: var(--white); text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
         
-        /* BUTTONS */
         .btn { padding: 12px 30px; border-radius: 50px; font-weight: 600; cursor: pointer; transition: var(--transition); border: 2px solid transparent; margin: 5px; }
         .btn-primary { background-color: var(--primary-color); color: var(--white); }
         .btn-primary:hover { transform: scale(1.05); background-color: #b01c1e; }
         .btn-secondary { background-color: transparent; border-color: var(--white); color: var(--white); }
         .btn-secondary:hover { background-color: var(--white); color: var(--secondary-color); }
 
-        /* SECTIONS */
+        /* FEATURES */
         section { padding: 5rem 5%; }
         .section-title { text-align: center; margin-bottom: 3rem; }
         .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
@@ -82,10 +82,12 @@
         .feature-card {
             background: var(--white); padding: 2rem; border-radius: 15px; text-align: center; box-shadow: var(--shadow);
             transform: translateY(30px); opacity: 0; transition: var(--transition);
+            cursor: pointer; position: relative; overflow: hidden;
         }
+        .feature-card:hover { transform: translateY(-10px); box-shadow: 0 10px 20px rgba(0,0,0,0.15); }
         .feature-card.visible { opacity: 1; transform: translateY(0); }
-        .feature-icon { font-size: 3rem; color: var(--accent-color); margin-bottom: 1rem; }
-
+        .feature-icon { font-size: 3rem; color: var(--accent-color); margin-bottom: 1rem; transition: 0.3s; }
+        
         /* GALLERY */
         .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
         .gallery-item { position: relative; border-radius: 15px; overflow: hidden; height: 300px; cursor: pointer; }
@@ -100,7 +102,12 @@
         .overlay-text { color: var(--white); transform: translateY(20px); transition: var(--transition); }
         .gallery-item:hover .overlay-text { transform: translateY(0); }
 
-        /* MODAL */
+        /* FOOTER */
+        footer { background-color: var(--secondary-color); color: var(--white); text-align: center; padding: 3rem 5%; }
+        .footer-links a { margin: 0 10px; font-size: 1.5rem; color: var(--white); transition: color 0.3s; }
+        .footer-links a:hover { color: var(--accent-color); }
+
+        /* MODAL CHUNG */
         .modal {
             display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%;
             background-color: rgba(0,0,0,0.6); backdrop-filter: blur(5px);
@@ -111,17 +118,25 @@
             background-color: var(--bg-color); padding: 2.5rem; border-radius: 15px; width: 90%; max-width: 500px;
             position: relative; transform: scale(0.7); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             text-align: center; border: 2px solid var(--accent-color);
+            max-height: 90vh; overflow-y: auto;
         }
         .modal.show .modal-content { transform: scale(1); }
-        .close-modal { position: absolute; top: 15px; right: 20px; font-size: 2rem; cursor: pointer; }
-        .modal input { width: 100%; padding: 12px; margin: 15px 0; border: 1px solid #ddd; border-radius: 8px; }
-        .modal .btn { width: 100%; margin: 0; }
+        .close-modal { position: absolute; top: 10px; right: 15px; font-size: 2rem; cursor: pointer; color: var(--text-color); }
+        .close-modal:hover { color: var(--primary-color); }
 
-        /* FOOTER */
-        footer { background-color: var(--secondary-color); color: var(--white); text-align: center; padding: 3rem 5%; }
-        .footer-links a { margin: 0 10px; font-size: 1.5rem; color: var(--white); transition: color 0.3s; }
-        .footer-links a:hover { color: var(--accent-color); }
-        
+        /* CSS CHO PHẦN NHẠC (JACK 97) */
+        .music-list { list-style: none; margin-top: 20px; text-align: left; }
+        .music-item {
+            padding: 10px; border-bottom: 1px solid #ddd; cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+            transition: 0.2s;
+        }
+        .music-item:hover { background-color: #eee; color: var(--primary-color); }
+        .music-item.active { background-color: var(--primary-color); color: white; border-radius: 5px; }
+        .video-container {
+            position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; margin-bottom: 20px; border-radius: 10px; background: black;
+        }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
         /* MOBILE */
         @media (max-width: 768px) {
             .menu-toggle { display: block; }
@@ -156,7 +171,7 @@
             <p>Mùa của yêu thương, của những cái ôm và những món quà ý nghĩa.</p>
             <div class="hero-buttons">
                 <button class="btn btn-primary" onclick="document.getElementById('features').scrollIntoView()">Khám phá ngay</button>
-                <button class="btn btn-secondary" id="btn-gift">Nhận quà tặng</button>
+                <button class="btn btn-secondary" onclick="openModal('giftModal')">Nhận quà tặng</button>
             </div>
         </div>
     </section>
@@ -164,20 +179,24 @@
     <section id="features">
         <div class="section-title"><h2>Hương Vị Lễ Hội</h2></div>
         <div class="features-grid">
-            <div class="feature-card">
+            
+            <div class="feature-card" onclick="openModal('drinkModal')">
                 <i class="feature-icon fa-solid fa-mug-hot"></i>
                 <h3>Đồ Uống Nóng</h3>
-                <p>Thưởng thức cacao nóng hổi bên lò sưởi.</p>
+                <p>Xem thực đơn đặc biệt của mùa Giáng Sinh.</p>
             </div>
-            <div class="feature-card">
+
+            <div class="feature-card" onclick="openModal('wrapModal')">
                 <i class="feature-icon fa-solid fa-gift"></i>
                 <h3>Gói Quà Miễn Phí</h3>
-                <p>Dịch vụ gói quà nghệ thuật trao gửi yêu thương.</p>
+                <p>Chọn mẫu giấy gói quà xinh xắn của riêng bạn.</p>
             </div>
-            <div class="feature-card">
+
+            <div class="feature-card" onclick="openModal('musicModal')">
                 <i class="feature-icon fa-solid fa-music"></i>
-                <h3>Nhạc Giáng Sinh</h3>
-                <p>Playlist những bản nhạc bất hủ vang lên.</p>
+                <h3>Nhạc Jack - J97</h3>
+                <p>Tuyển tập những bản Hit hay nhất của Jack.</p>
+                <span style="font-size: 0.8rem; color: var(--primary-color);">(Bấm để nghe nhạc)</span>
             </div>
         </div>
     </section>
@@ -204,53 +223,166 @@
         <h2>XmasDream</h2>
         <p>Chúc bạn một mùa Giáng Sinh an lành.</p>
         <div class="footer-links" style="margin-top: 20px;">
-            <a href="https://www.facebook.com/van.quy.510260" target="_blank" title="Facebook của Quý">
-                <i class="fa-brands fa-facebook"></i>
-            </a>
-            
-            <a href="https://www.instagram.com/_quyyys.20_11/" target="_blank" title="Instagram của Quý">
-                <i class="fa-brands fa-instagram"></i>
-            </a>
+            <a href="https://www.facebook.com/van.quy.510260" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+            <a href="https://www.instagram.com/_quyyys.20_11/" target="_blank"><i class="fa-brands fa-instagram"></i></a>
         </div>
     </footer>
 
     <div id="giftModal" class="modal">
         <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <i class="fa-solid fa-candy-cane" style="font-size: 4rem; color: #D42426; margin-bottom: 1rem;"></i>
-            <h3>Quà Tặng Bí Mật!</h3>
-            <p>Nhập email để nhận bộ thiệp Giáng Sinh điện tử!</p>
-            <form onsubmit="event.preventDefault(); alert('Đã gửi thành công!'); document.querySelector('.modal').classList.remove('show'); setTimeout(()=>document.querySelector('.modal').style.display='none',300);">
-                <input type="email" placeholder="Email của bạn..." required>
-                <button type="submit" class="btn btn-primary">Gửi ngay</button>
+            <span class="close-modal" onclick="closeModal('giftModal')">&times;</span>
+            <i class="fa-solid fa-envelope-open-text" style="font-size: 4rem; color: #D42426; margin-bottom: 1rem;"></i>
+            <h3>Gửi Quà Tặng</h3>
+            <p>Nhập thông tin, chúng tôi sẽ gửi thiệp Giáng Sinh vào email này!</p>
+            
+            <form id="contact-form" onsubmit="sendEmail(event)">
+                <input type="text" id="user_name" name="user_name" placeholder="Tên người nhận..." required style="width: 100%; padding: 12px; margin: 5px 0; border: 1px solid #ddd; border-radius: 8px;">
+                <input type="email" id="user_email" name="user_email" placeholder="Địa chỉ Email..." required style="width: 100%; padding: 12px; margin: 5px 0; border: 1px solid #ddd; border-radius: 8px;">
+                <textarea name="message" placeholder="Lời nhắn (tùy chọn)..." style="width: 100%; padding: 12px; margin: 5px 0; border: 1px solid #ddd; border-radius: 8px;"></textarea>
+                
+                <button type="submit" id="btn-submit" class="btn btn-primary" style="width: 100%;">Gửi Quà Ngay</button>
             </form>
+            <p id="email-status" style="margin-top:10px; font-size: 0.9rem; color: #666;"></p>
+        </div>
+    </div>
+
+    <div id="musicModal" class="modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <span class="close-modal" onclick="closeModal('musicModal'); stopVideo();">&times;</span>
+            <h3 style="margin-bottom: 15px;">Playlist Jack - J97</h3>
+            
+            <div class="video-container">
+                <iframe id="youtube-player" src="https://www.youtube.com/embed/Q0zqug_H7h8?enablejsapi=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+
+            <ul class="music-list">
+                <li class="music-item" onclick="playSong('q8X9F5_6wZ0', this)">
+                    <span><i class="fa-solid fa-play"></i> Thiên Lý Ơi</span>
+                    <span style="font-size: 0.8em; color: gray;">5:04</span>
+                </li>
+                <li class="music-item" onclick="playSong('Q0zqug_H7h8', this)">
+                    <span><i class="fa-solid fa-play"></i> Đom Đóm</span>
+                    <span style="font-size: 0.8em; color: gray;">5:53</span>
+                </li>
+                <li class="music-item" onclick="playSong('3Xcdi67g7b0', this)">
+                    <span><i class="fa-solid fa-play"></i> Hoa Hải Đường</span>
+                    <span style="font-size: 0.8em; color: gray;">4:16</span>
+                </li>
+                <li class="music-item" onclick="playSong('knW7-x7Y7RE', this)">
+                    <span><i class="fa-solid fa-play"></i> Hồng Nhan</span>
+                    <span style="font-size: 0.8em; color: gray;">3:23</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="drinkModal" class="modal">
+        <div class="modal-content" style="max-width: 400px;">
+            <span class="close-modal" onclick="closeModal('drinkModal')">&times;</span>
+            <i class="fa-solid fa-mug-hot" style="font-size: 3rem; color: var(--secondary-color);"></i>
+            <h3>Menu Giáng Sinh</h3>
+            <div style="text-align: left; margin-top: 15px;">
+                <p>☕ Cacao nóng: 55k</p>
+                <p>🍵 Trà cam quế: 45k</p>
+            </div>
+            <button class="btn btn-primary" style="width: 100%; margin-top: 15px;" onclick="closeModal('drinkModal')">Đóng</button>
+        </div>
+    </div>
+
+    <div id="wrapModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('wrapModal')">&times;</span>
+            <h3>Đã chọn giấy gói!</h3>
+            <p>Chúng tôi sẽ gói quà cẩn thận cho bạn.</p>
         </div>
     </div>
 
     <script>
-        // Menu Mobile
+        // --- CẤU HÌNH EMAILJS (QUAN TRỌNG) ---
+        // Bạn cần đăng ký tại https://www.emailjs.com/ (Miễn phí)
+        // Sau đó thay thế 3 giá trị dưới đây bằng ID của bạn:
+        const PUBLIC_KEY = "YOUR_PUBLIC_KEY"; // Ví dụ: "user_123456..."
+        const SERVICE_ID = "YOUR_SERVICE_ID"; // Ví dụ: "service_gmail"
+        const TEMPLATE_ID = "YOUR_TEMPLATE_ID"; // Ví dụ: "template_christmas"
+
+        (function(){
+            emailjs.init(PUBLIC_KEY);
+        })();
+
+        function sendEmail(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btn-submit');
+            const status = document.getElementById('email-status');
+            
+            // Nếu chưa thay key thì báo lỗi giả lập để test
+            if(PUBLIC_KEY === "YOUR_PUBLIC_KEY") {
+                alert("LƯU Ý: Bạn chưa điền Key của EmailJS vào code.\nCode sẽ chạy chế độ giả lập 'Gửi thành công'.");
+                closeModal('giftModal');
+                return;
+            }
+
+            btn.innerText = "Đang gửi...";
+            
+            // Gửi email thực sự
+            emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, e.target)
+                .then(function() {
+                    alert('Gửi quà thành công! Hãy kiểm tra Email.');
+                    closeModal('giftModal');
+                    btn.innerText = "Gửi Quà Ngay";
+                    e.target.reset();
+                }, function(error) {
+                    alert('Lỗi: ' + JSON.stringify(error));
+                    btn.innerText = "Gửi Lại";
+                });
+        }
+
+        // --- XỬ LÝ VIDEO NHẠC JACK ---
+        function playSong(videoId, element) {
+            // Đổi link iframe để phát bài mới
+            const iframe = document.getElementById('youtube-player');
+            iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&enablejsapi=1`;
+            
+            // Highlight bài đang hát
+            document.querySelectorAll('.music-item').forEach(item => item.classList.remove('active'));
+            if(element) element.classList.add('active');
+        }
+
+        function stopVideo() {
+            // Dừng nhạc khi đóng modal
+            const iframe = document.getElementById('youtube-player');
+            iframe.src = iframe.src.replace("autoplay=1", "autoplay=0"); 
+            // Reset src để tắt tiếng hẳn
+            const currentSrc = iframe.src;
+            iframe.src = "";
+            iframe.src = currentSrc;
+        }
+
+        // --- MODAL CHUNG ---
+        function openModal(id) {
+            const modal = document.getElementById(id);
+            modal.style.display = "flex";
+            setTimeout(() => modal.classList.add('show'), 10);
+        }
+
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            modal.classList.remove('show');
+            setTimeout(() => modal.style.display = "none", 300);
+        }
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                // Nếu đóng modal nhạc thì dừng nhạc
+                if(event.target.id === 'musicModal') stopVideo();
+                event.target.classList.remove('show');
+                setTimeout(() => event.target.style.display = "none", 300);
+            }
+        }
+
+        // Menu Mobile & Scroll Effect
         const menuBtn = document.getElementById('mobile-menu-btn');
         const navLinks = document.getElementById('nav-menu');
-        menuBtn.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-            menuBtn.innerHTML = navLinks.classList.contains('active') ? '<i class="fa-solid fa-xmark"></i>' : '<i class="fa-solid fa-bars"></i>';
-        });
-        document.querySelectorAll('.nav-links a').forEach(l => l.addEventListener('click', () => {
-            navLinks.classList.remove('active');
-            menuBtn.innerHTML = '<i class="fa-solid fa-bars"></i>';
-        }));
-
-        // Modal
-        const modal = document.getElementById('giftModal');
-        const openBtn = document.getElementById('btn-gift');
-        const closeBtn = document.querySelector('.close-modal');
+        menuBtn.addEventListener('click', () => navLinks.classList.toggle('active'));
         
-        openBtn.addEventListener('click', () => { modal.style.display="flex"; setTimeout(()=>modal.classList.add('show'),10); });
-        const closeModal = () => { modal.classList.remove('show'); setTimeout(()=>modal.style.display="none",300); };
-        closeBtn.addEventListener('click', closeModal);
-        window.addEventListener('click', (e) => { if(e.target == modal) closeModal(); });
-
-        // Animation Scroll
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('visible'); });
         }, { threshold: 0.2 });
